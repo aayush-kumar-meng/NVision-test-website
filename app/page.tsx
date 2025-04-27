@@ -1,6 +1,5 @@
-import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Github, Download, Zap, Database, Microscope, Code } from "lucide-react"
+import { ArrowRight, Github, Zap, Database, Microscope, Code, Upload, Settings, Play, Info } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 
@@ -33,6 +32,9 @@ export default function Home() {
             <Link href="#documentation" className="text-sm font-medium transition-colors hover:text-primary">
               Documentation
             </Link>
+            <Link href="/demo" className="text-sm font-medium transition-colors hover:text-primary">
+              Interactive Demo
+            </Link>
             <Link
               href="https://github.com/karaev-uchicago/quantum-NVision"
               className="text-sm font-medium transition-colors hover:text-primary"
@@ -42,10 +44,7 @@ export default function Home() {
           </nav>
           <div className="flex items-center gap-4">
             <Button asChild>
-              <Link href="https://github.com/karaev-uchicago/quantum-NVision/archive/refs/heads/main.zip">
-                <Download className="mr-2 h-4 w-4" />
-                Download
-              </Link>
+              <Link href="/demo">Try Demo</Link>
             </Button>
           </div>
         </div>
@@ -74,6 +73,9 @@ export default function Home() {
                   Explore Technology
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/demo">Try Interactive Demo</Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
                 <Link href="https://github.com/karaev-uchicago/quantum-NVision">
@@ -107,13 +109,72 @@ export default function Home() {
               </div>
               <div className="relative aspect-video rounded-xl overflow-hidden shadow-xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-cyan-900/20"></div>
-                <Image
-                  src="/placeholder.svg?height=720&width=1280"
-                  alt="NVision Diamond Scan Visualization"
-                  width={1280}
-                  height={720}
-                  className="object-cover"
-                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  {/* Diamond lattice visualization */}
+                  <div className="relative w-4/5 h-4/5">
+                    {/* Diamond lattice structure */}
+                    <div className="absolute inset-0">
+                      {Array.from({ length: 10 }).map((_, i) => (
+                        <div
+                          key={`row-${i}`}
+                          className="absolute w-full border-t border-white/10"
+                          style={{ top: `${i * 10}%` }}
+                        />
+                      ))}
+                      {Array.from({ length: 10 }).map((_, i) => (
+                        <div
+                          key={`col-${i}`}
+                          className="absolute h-full border-l border-white/10"
+                          style={{ left: `${i * 10}%` }}
+                        />
+                      ))}
+                    </div>
+
+                    {/* NV centers */}
+                    {Array.from({ length: 8 }).map((_, i) => {
+                      const x = Math.random() * 100
+                      const y = Math.random() * 100
+                      const size = Math.random() * 1.5 + 0.5
+
+                      return (
+                        <div
+                          key={`nv-${i}`}
+                          className="absolute rounded-full animate-pulse"
+                          style={{
+                            left: `${x}%`,
+                            top: `${y}%`,
+                            width: `${size}rem`,
+                            height: `${size}rem`,
+                            backgroundColor: `rgba(${Math.floor(100 + Math.random() * 155)}, ${Math.floor(100 + Math.random() * 155)}, 255, 0.6)`,
+                            boxShadow: `0 0 ${size * 5}px rgba(120, 120, 255, 0.8)`,
+                            transform: "translate(-50%, -50%)",
+                            animationDuration: `${3 + Math.random() * 2}s`,
+                          }}
+                        />
+                      )
+                    })}
+
+                    {/* Carbon atoms */}
+                    {Array.from({ length: 60 }).map((_, i) => {
+                      const x = Math.random() * 100
+                      const y = Math.random() * 100
+
+                      return (
+                        <div
+                          key={`atom-${i}`}
+                          className="absolute rounded-full bg-white/30"
+                          style={{
+                            left: `${x}%`,
+                            top: `${y}%`,
+                            width: "0.15rem",
+                            height: "0.15rem",
+                            transform: "translate(-50%, -50%)",
+                          }}
+                        />
+                      )
+                    })}
+                  </div>
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4">
                   <p className="text-white text-sm">Visualization of NV centers in diamond lattice</p>
@@ -186,13 +247,29 @@ export default function Home() {
               <div className="relative">
                 <div className="aspect-square rounded-xl overflow-hidden border border-white/10">
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-cyan-500/10"></div>
-                  <Image
-                    src="/placeholder.svg?height=800&width=800"
-                    alt="NVision Interface"
-                    width={800}
-                    height={800}
-                    className="object-cover"
-                  />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    {/* Visualization of NV centers */}
+                    <div className="relative w-4/5 h-4/5">
+                      <div className="absolute inset-0 grid grid-cols-20 grid-rows-20">
+                        {Array.from({ length: 400 }).map((_, i) => {
+                          const intensity = Math.random()
+                          const isNVCenter = Math.random() > 0.95
+
+                          return (
+                            <div
+                              key={i}
+                              className={`
+                                ${isNVCenter ? "ring-2 ring-white" : ""}
+                              `}
+                              style={{
+                                backgroundColor: `rgba(${Math.floor(68 + intensity * 187)}, ${Math.floor(1 + intensity * 254)}, ${Math.floor(84 + intensity * 171)}, ${intensity})`,
+                              }}
+                            />
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -306,37 +383,149 @@ export default function Home() {
                   <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                   <div className="w-3 h-3 rounded-full bg-green-500"></div>
                   <div className="flex-1"></div>
-                  <div className="text-xs text-muted-foreground">example.py</div>
+                  <div className="text-xs text-muted-foreground">NVision Workflow</div>
                 </div>
-                <pre className="text-sm overflow-x-auto p-4 bg-black text-gray-300 rounded-lg">
-                  <code>{`import nvision
 
-# Load FSM scan data
-scan_data = nvision.load_scan("diamond_sample_001.fsm")
+                {/* Interactive visualization instead of code */}
+                <div className="bg-black rounded-lg p-4 h-[300px] relative overflow-hidden">
+                  <div className="absolute inset-0 flex flex-col">
+                    <div className="flex-1 flex items-center justify-center border-b border-white/10 relative">
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-cyan-500/5"></div>
+                      <div className="text-center">
+                        <div className="w-16 h-16 bg-purple-900/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                          <Upload className="h-8 w-8 text-purple-400" />
+                        </div>
+                        <p className="text-white font-medium">1. Upload FSM Scan</p>
+                        <p className="text-xs text-white/60 mt-1">JSON format containing scan data</p>
+                      </div>
+                    </div>
 
-# Configure detection parameters
-params = nvision.DetectionParams(
-    threshold=0.75,
-    min_size=3,
-    max_size=15,
-    background_correction=True
-)
+                    <div className="flex-1 flex">
+                      <div className="w-1/2 flex items-center justify-center border-r border-white/10 relative">
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-cyan-500/5"></div>
+                        <div className="text-center">
+                          <div className="w-12 h-12 bg-purple-900/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <Settings className="h-6 w-6 text-purple-400" />
+                          </div>
+                          <p className="text-white font-medium">2. Configure</p>
+                          <p className="text-xs text-white/60 mt-1">Set detection parameters</p>
+                        </div>
+                      </div>
 
-# Run NV center detection
-results = nvision.detect_nv_centers(scan_data, params)
+                      <div className="w-1/2 flex items-center justify-center relative">
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-cyan-500/5"></div>
+                        <div className="text-center">
+                          <div className="w-12 h-12 bg-purple-900/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <Play className="h-6 w-6 text-purple-400" />
+                          </div>
+                          <p className="text-white font-medium">3. Analyze</p>
+                          <p className="text-xs text-white/60 mt-1">Run NV center detection</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-# Generate visualization
-fig = nvision.visualize(
-    scan_data, 
-    results, 
-    show_markers=True,
-    colormap='viridis'
-)
+        {/* Interactive Demo Section */}
+        <section className="py-16 md:py-24 bg-gradient-to-br from-purple-900/20 via-black to-cyan-900/20">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-3xl font-bold tracking-tight mb-6">Try It Yourself</h2>
+                <p className="text-lg mb-6 text-muted-foreground">
+                  Experience the power of NVision with our interactive demo. Upload your FSM scan data, configure
+                  detection parameters, and visualize the results in real-time.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                      <Upload className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                    </div>
+                    <p className="font-medium">Upload your FSM scan data</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                      <Settings className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                    </div>
+                    <p className="font-medium">Configure detection parameters</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                      <Play className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                    </div>
+                    <p className="font-medium">Run the analysis</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                      <Info className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                    </div>
+                    <p className="font-medium">Explore and analyze results</p>
+                  </div>
+                </div>
+                <div className="mt-8">
+                  <Button size="lg" asChild>
+                    <Link href="/demo">
+                      Launch Interactive Demo
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
 
-# Export results
-nvision.export_results(results, "sample_001_results.csv")
-print(f"Detected {len(results.centers)} NV centers")`}</code>
-                </pre>
+              <div className="relative">
+                <div className="aspect-video rounded-xl overflow-hidden border border-white/10 shadow-xl">
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-cyan-500/10"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    {/* Interactive demo visualization */}
+                    <div className="relative w-4/5 h-4/5 bg-black/50 rounded-lg overflow-hidden">
+                      <div className="absolute top-0 left-0 right-0 h-8 bg-black/70 flex items-center px-3">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                          <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+                          <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                        </div>
+                        <div className="text-xs text-white/70 mx-auto">NVision Demo</div>
+                      </div>
+
+                      <div className="absolute top-8 inset-x-0 bottom-0 flex">
+                        <div className="w-1/3 border-r border-white/10 p-2">
+                          <div className="h-full bg-black/30 rounded p-2">
+                            <div className="w-full h-4 bg-white/10 rounded mb-2"></div>
+                            <div className="w-3/4 h-4 bg-white/10 rounded mb-4"></div>
+                            <div className="w-full h-24 bg-purple-500/20 border border-purple-500/30 rounded mb-4 flex items-center justify-center">
+                              <Upload className="h-8 w-8 text-purple-400/50" />
+                            </div>
+                            <div className="w-1/2 h-8 bg-white/10 rounded mx-auto"></div>
+                          </div>
+                        </div>
+
+                        <div className="w-2/3 p-2">
+                          <div className="h-full bg-black/30 rounded p-2">
+                            <div className="grid grid-cols-10 grid-rows-10 gap-0.5 h-full">
+                              {Array.from({ length: 100 }).map((_, i) => {
+                                const intensity = Math.random()
+                                return (
+                                  <div
+                                    key={`cell-${i}`}
+                                    className="rounded-sm"
+                                    style={{
+                                      backgroundColor: `rgba(${Math.floor(68 + intensity * 187)}, ${Math.floor(1 + intensity * 254)}, ${Math.floor(84 + intensity * 171)}, ${intensity})`,
+                                    }}
+                                  />
+                                )
+                              })}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-full opacity-50 blur-xl"></div>
               </div>
             </div>
           </div>
@@ -358,7 +547,7 @@ print(f"Detected {len(results.centers)} NV centers")`}</code>
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link href="#documentation">Explore Documentation</Link>
+                <Link href="/demo">Try Interactive Demo</Link>
               </Button>
             </div>
           </div>
